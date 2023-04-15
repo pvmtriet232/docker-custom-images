@@ -1,18 +1,26 @@
 FROM ubuntu:20.04
 
-RUN apt-get update && \
-    apt-get install -y wget build-essential libffi-dev zlib1g-dev libssl-dev
+# you can specify python version during image build
+ARG PYTHON_VERSION=3.9.16
 
-WORKDIR /tmp
-RUN wget https://www.python.org/ftp/python/3.9.16/Python-3.9.16.tar.xz && \
-    tar -xJf Python-3.9.16.tar.xz
+# install build dependencies and needed tools
+RUN apk add \
+    wget \
+    gcc \
+    make \
+    zlib-dev \
+    libffi-dev \
+    openssl-dev \
+    musl-dev
 
-WORKDIR /tmp/Python-3.9.16
-RUN ./configure && \
-    make && \
-    make install
+# download and extract python sources
+RUN cd /opt \
+    && wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz \                                              
+    && tar xzf Python-${PYTHON_VERSION}.tgz
 
-RUN python3.9 --version
-
-RUN rm -rf /tmp/Python-3.9.16* && \
-    apt-get clean
+# build python and remove left-over sources
+RUN cd /opt/Python-${PYTHON_VERSION} \ 
+    && ./configure --prefix=/usr --enable-optimizations --with-ensurepip=install \
+    && make install \
+    && rm /opt/Python-${PYTHON_VERSION}.tgz /opt/Python-${PYTHON_VERSION} -rf
+                                                                                                                                                                                                                                               # rest of the image, python3 and pip3 commands will be available
