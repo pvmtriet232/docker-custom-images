@@ -1,13 +1,18 @@
-# Use phusion/baseimage as base image. To make your builds reproducible, make
-# sure you lock down to a specific version, not to `latest`!
-# See https://github.com/phusion/baseimage-docker/blob/master/Changelog.md for
-# a list of version numbers.
-FROM phusion/baseimage:jammy-1.0.1
+FROM ubuntu:20.04
 
-# Use baseimage-docker's init system.
-CMD ["/sbin/my_init"]
+RUN apt-get update && \
+    apt-get install -y wget build-essential libffi-dev zlib1g-dev libssl-dev
 
-# ...put your own build instructions here...
+WORKDIR /tmp
+RUN wget https://www.python.org/ftp/python/3.9.16/Python-3.9.16.tar.xz && \
+    tar -xJf Python-3.9.16.tar.xz
 
-# Clean up APT when done.
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+WORKDIR /tmp/Python-3.9.16
+RUN ./configure && \
+    make && \
+    make install
+
+RUN python3.9 --version
+
+RUN rm -rf /tmp/Python-3.9.16* && \
+    apt-get clean
