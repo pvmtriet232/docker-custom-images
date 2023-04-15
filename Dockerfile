@@ -4,7 +4,7 @@ FROM ubuntu:20.04
 ARG PYTHON_VERSION=3.9.16
 
 # install build dependencies and needed tools
-RUN apk add \
+RUN apt install add \
     wget \
     gcc \
     make \

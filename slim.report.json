@@ -1,0 +1,17 @@
+{
+  "version": "1.0",
+  "engine": "linux|Transformer|1.40.1|latest|latest",
+  "containerized": false,
+  "host_distro": {
+    "name": "Ubuntu",
+    "version": "22.04",
+    "display_name": "Ubuntu 22.04.2 LTS"
+  },
+  "type": "lint",
+  "state": "done",
+  "target_type": "",
+  "target_reference": "",
+  "hits_count": 0,
+  "nohits_count": 0,
+  "errors_count": 0
+}
