@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM alpine
 
 # you can specify python version during image build
 ARG PYTHON_VERSION=3.9.16
